@@ -1,0 +1,24 @@
+Expected output when every task is complete
+
+Test command, run in starter/:
+  mvn -q -o test
+
+Terminal: no output, and the command exits with status 0.
+Quiet mode (-q) prints only problems, so silence means every test passed.
+
+Test report, starter/target/surefire-reports/reports.OrderReportsTest.txt, contains a line that starts with (a run time follows it):
+  Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+
+Program output, from mvn -q -o compile exec:java run in starter/
+(it loads ../fixtures/orders.sql into an in-memory H2 database first):
+  Loaded orders: 12
+  Needs review: [A-103, A-106, A-112]
+  Open codes: [A-102, A-103, A-104, A-106, A-108, A-110, A-112]
+  Open summary: 7 open: A-102, A-103, A-104, A-106, A-108, A-110, A-112
+  Count by status: {CANCELLED=2, OPEN=7, SHIPPED=3}
+  Cents by customer: {eli=12200, dee=300, ana=10250, bo=14090, fay=3000, cyd=35000}
+  Largest open order: A-103
+  Open totals above 10000 cents (from SQL): {bo=13490, cyd=15000}
+
+The two maps built by stream collectors are HashMaps, so their printed order is not guaranteed;
+the same entries in another order are also correct.
