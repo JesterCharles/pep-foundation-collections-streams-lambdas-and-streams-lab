@@ -68,21 +68,77 @@ Silence means all 8 tests pass. Leave the other files as they are: `Order.java`,
 
 Read a hint only when the failure message is not enough. Method references such as `Order::code` fit most `map` and key steps; use them where they read more clearly than a lambda.
 
-**Task 1.** The statement and result set are already opened for you. Loop while the cursor can move to another row (that method returns `false` after the last row). In the loop, read the five columns by name with the `ResultSet` getter that matches each column's type (four text columns, one whole number), and add one new `Order` to `rows`.
+**Task 1**
 
-**Task 2.** `IS_LARGE` is a `Predicate<Order>` lambda: true from 10000 cents. Build the next three from rules that already exist, with the interfaces' default methods instead of new lambdas: `NEEDS_REVIEW` needs `IS_OPEN` and `IS_LARGE` together (`and`), `ACTIVE` is the opposite of `IS_CANCELLED` (`negate`), and `REGION_TAG` runs `toUpperCase` on `REGION`'s result (`andThen`). `largeFor(vip)` uses a threshold of 5000 cents for VIP customers and 10000 otherwise: work the threshold out first, then return a lambda that uses it. If the compiler says a variable "must be final or effectively final", compute it in one assignment.
+<details>
+<summary>Hint</summary>
 
-**Task 3.** One pipeline over `orders`: keep the open orders (`filter` with an existing rule), turn each order into its code (`map`), sort, and collect into a list. Nothing runs until the terminal operation at the end.
+The statement and result set are already opened for you. Loop while the cursor can move to another row (that method returns `false` after the last row). In the loop, read the five columns by name with the `ResultSet` getter that matches each column's type (four text columns, one whole number), and add one new `Order` to `rows`.
 
-**Task 4.** `count()` is the stream's terminal operation, so using the same stream again throws `IllegalStateException: stream has already been operated upon or closed`. Produce the open codes once (Task 3's method already does) and take the number from that result.
+</details>
 
-**Task 5.** `countByStatus`: `Collectors.groupingBy` with the status as the classifier and a downstream collector that counts each group (the counts are `Long`). `codesByRegion`: group by region with `Collectors.mapping` downstream, turning each order into its code before collecting the codes into a list.
+**Task 2**
 
-**Task 6.** `toMap` with only a key and a value function throws `IllegalStateException: Duplicate key ana`, because ana has three orders. Give `toMap` a third argument: a merge function that adds the two values.
+<details>
+<summary>Hint</summary>
 
-**Task 7.** `max` returns an `Optional<Order>`, which is empty when no order is open, and `get()` then throws `NoSuchElementException`. Remove `get()`, turn the `Optional<Order>` into an `Optional<String>` with the code (`map` on the `Optional`), then give the fallback `"none"` with the `Optional` method for a default value.
+`IS_LARGE` is a `Predicate<Order>` lambda: true from 10000 cents. Build the next three from rules that already exist, with the interfaces' default methods instead of new lambdas: `NEEDS_REVIEW` needs `IS_OPEN` and `IS_LARGE` together (`and`), `ACTIVE` is the opposite of `IS_CANCELLED` (`negate`), and `REGION_TAG` runs `toUpperCase` on `REGION`'s result (`andThen`). `largeFor(vip)` uses a threshold of 5000 cents for VIP customers and 10000 otherwise: work the threshold out first, then return a lambda that uses it. If the compiler says a variable "must be final or effectively final", compute it in one assignment.
 
-**Task 8.** The method that runs the query is given; you replace the placeholder query text. Keep the output columns `customer` and `total` (the sum of `cents`, named with an alias) and exactly one `?`, the minimum. In order, the query needs a `WHERE` clause that keeps only open rows, a `GROUP BY` clause that makes one group per customer, a `HAVING` clause that keeps only groups whose sum is above the `?` minimum, and an `ORDER BY` clause that sorts customers A to Z. Use the exact column names `code`, `customer`, `region`, `status` and `cents`.
+</details>
+
+**Task 3**
+
+<details>
+<summary>Hint</summary>
+
+One pipeline over `orders`: keep the open orders (`filter` with an existing rule), turn each order into its code (`map`), sort, and collect into a list. Nothing runs until the terminal operation at the end.
+
+</details>
+
+**Task 4**
+
+<details>
+<summary>Hint</summary>
+
+`count()` is the stream's terminal operation, so using the same stream again throws `IllegalStateException: stream has already been operated upon or closed`. Produce the open codes once (Task 3's method already does) and take the number from that result.
+
+</details>
+
+**Task 5**
+
+<details>
+<summary>Hint</summary>
+
+`countByStatus`: `Collectors.groupingBy` with the status as the classifier and a downstream collector that counts each group (the counts are `Long`). `codesByRegion`: group by region with `Collectors.mapping` downstream, turning each order into its code before collecting the codes into a list.
+
+</details>
+
+**Task 6**
+
+<details>
+<summary>Hint</summary>
+
+`toMap` with only a key and a value function throws `IllegalStateException: Duplicate key ana`, because ana has three orders. Give `toMap` a third argument: a merge function that adds the two values.
+
+</details>
+
+**Task 7**
+
+<details>
+<summary>Hint</summary>
+
+`max` returns an `Optional<Order>`, which is empty when no order is open, and `get()` then throws `NoSuchElementException`. Remove `get()`, turn the `Optional<Order>` into an `Optional<String>` with the code (`map` on the `Optional`), then give the fallback `"none"` with the `Optional` method for a default value.
+
+</details>
+
+**Task 8**
+
+<details>
+<summary>Hint</summary>
+
+The method that runs the query is given; you replace the placeholder query text. Keep the output columns `customer` and `total` (the sum of `cents`, named with an alias) and exactly one `?`, the minimum. In order, the query needs a `WHERE` clause that keeps only open rows, a `GROUP BY` clause that makes one group per customer, a `HAVING` clause that keeps only groups whose sum is above the `?` minimum, and an `ORDER BY` clause that sorts customers A to Z. Use the exact column names `code`, `customer`, `region`, `status` and `cents`.
+
+</details>
 
 ## Reference
 
