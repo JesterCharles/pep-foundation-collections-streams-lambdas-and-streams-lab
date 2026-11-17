@@ -39,15 +39,6 @@ class HeldOutTests {
             new Order("A-111", "bo", "south", "SHIPPED", 600),
             new Order("A-112", "eli", "east", "OPEN", 10000));
 
-    /** The fixture in a scrambled order. */
-    private static List<Order> scrambled() {
-        List<Order> list = new ArrayList<>();
-        for (int i = 0; i < FIXTURE.size(); i++) {
-            list.add(FIXTURE.get((i * 5) % FIXTURE.size()));
-        }
-        return list;
-    }
-
     private static List<String> codesWhere(java.util.function.Predicate<Order> rule) {
         List<String> codes = new ArrayList<>();
         for (Order o : FIXTURE) {
@@ -64,15 +55,6 @@ class HeldOutTests {
         assertEquals("WEST", OrderReports.REGION_TAG.apply(FIXTURE.get(9)), "Task 2: REGION_TAG of a west order must be WEST");
         assertEquals(List.of("A-103", "A-106", "A-109", "A-112"), codesWhere(OrderReports.largeFor(false)),
                 "Task 2: largeFor(false) must be true from 10000 cents, like IS_LARGE");
-    }
-
-    @Test
-    void task3OpenCodesEdgeCases() {
-        List<Order> input = scrambled();
-        List<Order> before = List.copyOf(input);
-        OrderReports.openCodes(input);
-        assertEquals(before, input, "Task 3: openCodes must not change the caller's list");
-        assertEquals(List.of(), OrderReports.openCodes(List.of()), "Task 3: openCodes of no orders must be an empty list");
     }
 
     @Test

@@ -89,6 +89,11 @@ class VisibleTests {
     void task3OpenCodesSorted() {
         assertEquals(List.of("A-102", "A-103", "A-104", "A-106", "A-108", "A-110", "A-112"), OrderReports.openCodes(scrambled()),
                 "Task 3: openCodes must keep only OPEN orders, map them to their codes and sort the codes");
+        List<Order> input = scrambled();
+        List<Order> before = List.copyOf(input);
+        OrderReports.openCodes(input);
+        assertEquals(before, input, "Task 3: openCodes must not change the caller's list");
+        assertEquals(List.of(), OrderReports.openCodes(List.of()), "Task 3: openCodes of no orders must be an empty list");
     }
 
     @Test
