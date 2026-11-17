@@ -6,25 +6,26 @@ You finish the morning reports of a small online shop. The shop's orders are in 
 
 ## Quick start
 
-1. Open the lab project. The files you edit are in `src/main/java/reports/`; the checklist below names them.
+1. Open the lab project. The files you edit are in `src/main/java/exercise/`; the checklist below names them.
 2. Select **Run Tests** before you change anything.
 
-   **All 8 tests fail at first. That is expected: the TODOs are not done yet.**
+   **All 8 visible tests fail at first. That is expected: the TODOs are not done yet.**
    Every failure message starts with its task number, such as `Task 1:`.
 3. Work through the checklist below. After each task, select **Run Tests** again and read the remaining `Task N:` messages.
-4. **You are finished when all 8 tests pass.** Then select **Submit**.
+4. **You are finished when all 8 visible tests pass.** Then select **Submit**.
+   Submitting also runs held-out tests you can't see. They check the edge cases each task's steps describe, such as an empty list of orders.
 
 ```
-OPEN project -> RUN TESTS: 8 fail (expected)
+OPEN project -> RUN TESTS: 8 visible tests fail (expected)
   -> READ the "Task N:" messages -> EDIT the next TODO -> RUN TESTS again
-  -> repeat for Tasks 1-8 -> SUBMIT when all 8 tests pass
+  -> repeat for Tasks 1-8 -> SUBMIT when all 8 visible tests pass
 ```
 
 In words: open the project, run the tests, read which tasks fail, complete one task's TODO, run the tests again, and submit when they all pass.
 
 ## Checklist
 
-Edit only these two files in `src/main/java/reports/`. Each task has a `TODO Task N` comment there.
+Edit only these two files in `src/main/java/exercise/`. Each task has a `TODO Task N` comment there.
 
 - [ ] Task 1: `OrderLoader.java`, `loadAll` (read every database row into an `Order` record)
 - [ ] Task 2: `OrderReports.java`, the four rule fields and `largeFor` (one `TODO` above the fields, one in `largeFor`): build the rules from lambdas
@@ -40,7 +41,7 @@ Tasks 2-7 use a fixed list of orders, so they do not depend on Task 1.
 A task is done when no failure message starts with its number.
 Leave the other files as they are:
 - `Order.java`, `ReportApp.java` and `fixtures/orders.sql` are given.
-- The tests in `src/test/java/reports/` are restored to their original state before your work is graded, so changes to them do not count. Leave the build file `pom.xml` and `expected/test-summary.txt` as they are.
+- The tests in `src/test/java/exercise/` are restored to their original state before your work is graded, so changes to them do not count. Leave the build file `pom.xml` as it is.
 
 ## Hints
 
@@ -126,14 +127,22 @@ Check any explanation with a test run before you trust it.
 
 ## Run the program (optional)
 
-The demo prints eight report lines. In a terminal, from the project folder:
+The demo prints eight report lines. Open `src/main/java/exercise/ReportApp.java` and select **Run** above `main`; the editor runs it from the project folder with H2 on the classpath.
+
+On the starter, most lines show `0`, `[]` or `{}`, and two show `not working yet`. When all tasks are done it prints:
 
 ```
-mvn -q compile exec:java
+Loaded orders: 12
+Needs review: [A-103, A-106, A-112]
+Open codes: [A-102, A-103, A-104, A-106, A-108, A-110, A-112]
+Open summary: 7 open: A-102, A-103, A-104, A-106, A-108, A-110, A-112
+Count by status: {CANCELLED=2, OPEN=7, SHIPPED=3}
+Cents by customer: {eli=12200, dee=300, ana=10250, bo=14090, fay=3000, cyd=35000}
+Largest open order: A-103
+Open totals above 10000 cents (from SQL): {bo=13490, cyd=15000}
 ```
 
-On the starter, most lines show `0`, `[]` or `{}`, and two show `not working yet`. When all tasks are done they match `expected/test-summary.txt`.
-The first run downloads the exec plugin, so it needs internet access; Run Tests does not use it.
+The two maps built by stream collectors are HashMaps, so their printed order is not guaranteed; the same entries in another order are also correct.
 
 ## Start over
 
@@ -141,7 +150,7 @@ Undo your edits in `OrderLoader.java` and `OrderReports.java`. Compiled files go
 
 ## Troubleshooting
 
-- **`orders.sql` not found.** The tests and the demo read `fixtures/orders.sql` relative to the project folder, so run them from there. Use **Run Tests**, or run the terminal command in the project folder.
+- **`orders.sql` not found.** The tests and the demo read `fixtures/orders.sql` relative to the project folder, so run them from there. Use **Run Tests**, or run the demo with the editor's **Run**, which starts in the project folder.
 - **`No suitable driver found for jdbc:h2:mem:`.** The H2 driver is missing from the Maven cache. Use **Run Tests**, and do not edit `pom.xml`.
 - **`COMPILATION ERROR`.** Maven names the file and `[line,column]`. Fix that line and run the tests again.
 - **An `SQLException` in Task 1 or 8.** The message names the problem, such as an unknown column or a syntax error near a word. Check the column names in the Task 8 hint.
